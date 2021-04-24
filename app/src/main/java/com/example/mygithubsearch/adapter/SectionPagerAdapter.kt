@@ -1,8 +1,10 @@
-package com.example.mygithubsearch
+package com.example.mygithubsearch.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.mygithubsearch.ui.follower.FollowerFragment
+import com.example.mygithubsearch.ui.following.FollowingFragment
 
 
 class SectionPagerAdapter(activity: AppCompatActivity) : FragmentStateAdapter(activity)  {

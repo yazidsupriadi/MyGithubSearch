@@ -1,4 +1,4 @@
-package com.example.mygithubsearch
+package com.example.mygithubsearch.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.mygithubsearch.R
+import com.example.mygithubsearch.data.Github
 
 class GithubAdapter(private val listGithub: ArrayList<Github>): RecyclerView.Adapter<GithubAdapter.ListViewHolder>() {
 

@@ -11,7 +11,12 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mygithubsearch.adapter.GithubAdapter
+import com.example.mygithubsearch.data.Github
 import com.example.mygithubsearch.databinding.ActivityMainBinding
+import com.example.mygithubsearch.ui.detail.DetailActivity
+import com.example.mygithubsearch.ui.favorite.FavoriteActivity
+import com.example.mygithubsearch.ui.setting.SettingActivity
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
@@ -67,7 +72,7 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.setting -> {
-                val i = Intent(this, AlarmActivity::class.java)
+                val i = Intent(this, SettingActivity::class.java)
                 startActivity(i)
                 return true
             }

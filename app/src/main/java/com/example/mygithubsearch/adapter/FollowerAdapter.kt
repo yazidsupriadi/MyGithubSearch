@@ -1,10 +1,11 @@
-package com.example.mygithubsearch
+package com.example.mygithubsearch.adapter
 
 import android.view.LayoutInflater
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.mygithubsearch.data.Follower
 import com.example.mygithubsearch.databinding.ItemRowGithubBinding
 
 class FollowerAdapter(private val listFollowerGithub: ArrayList<Follower>): RecyclerView.Adapter<FollowerAdapter.ListViewHolder>() {

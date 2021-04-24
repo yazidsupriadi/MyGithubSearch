@@ -1,5 +1,4 @@
-package com.example.mygithubsearch
-
+package com.example.mygithubsearch.ui.following
 
 import android.os.Bundle
 import android.util.Log
@@ -9,13 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mygithubsearch.adapter.FollowingAdapter
+import com.example.mygithubsearch.ui.detail.DetailActivity
+import com.example.mygithubsearch.ui.follower.FollowerFragment
+import com.example.mygithubsearch.data.Following
+import com.example.mygithubsearch.data.Github
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import org.json.JSONArray
-import com.example.mygithubsearch.databinding.FragmentFollowerBinding
+import com.example.mygithubsearch.databinding.FragmentFollowingBinding
 
-class FollowerFragment : Fragment() {
+class FollowingFragment : Fragment() {
 
     companion object{
 
@@ -23,17 +27,17 @@ class FollowerFragment : Fragment() {
     }
 
 
-    private lateinit var binding: FragmentFollowerBinding
+    private lateinit var binding: FragmentFollowingBinding
 
-    private val listGithubFollower: ArrayList<Follower> = arrayListOf()
-    private lateinit var adapter : FollowerAdapter
+    private val listGithubFollowing: ArrayList<Following> = arrayListOf()
+    private lateinit var adapter : FollowingAdapter
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = FollowerAdapter(listGithubFollower)
+        adapter = FollowingAdapter(listGithubFollowing)
         val dataUser = activity?.intent?.getParcelableExtra<Github>(DetailActivity.EXTRA_DATA) as Github
-        listGithubFollower.clear()
+        listGithubFollowing.clear()
         getGithubFollower(dataUser.username.toString())
     }
 
@@ -41,7 +45,7 @@ class FollowerFragment : Fragment() {
         val client = AsyncHttpClient()
         client.addHeader("User-Agent", "request")
         client.addHeader("Authorization", "token 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")
-        val url = "https://api.github.com/users/$id/followers"
+        val url = "https://api.github.com/users/$id/following"
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(
                 statusCode: Int,
@@ -49,7 +53,7 @@ class FollowerFragment : Fragment() {
                 responseBody: ByteArray
             ) {
 
-                binding.progressBarFollower.visibility = View.INVISIBLE
+                binding.progressBarFollowing.visibility = View.INVISIBLE
                 val result = String(responseBody)
                 Log.d(TAG, result)
                 try {
@@ -58,10 +62,10 @@ class FollowerFragment : Fragment() {
                         val jsonObject = jsonArray.getJSONObject(i)
                         val username: String = jsonObject.getString("login")
                         val avatar = jsonObject.getString("avatar_url")
-                        val follower = Follower()
-                        follower.username = username
-                        follower.avatar = avatar
-                        listGithubFollower.add(follower)
+                        val following = Following()
+                        following.username = username
+                        following.avatar = avatar
+                        listGithubFollowing.add(following)
 
                     }
                     showRecyclerList()
@@ -73,7 +77,7 @@ class FollowerFragment : Fragment() {
             }
 
             override fun onFailure(statusCode: Int, headers: Array<Header>, responseBody: ByteArray, error: Throwable) {
-                binding.progressBarFollower.visibility = View.INVISIBLE
+                binding.progressBarFollowing.visibility = View.INVISIBLE
                 val errorMessage = when (statusCode) {
                     401 -> "$statusCode : Bad Request"
                     403 -> "$statusCode : Forbidden"
@@ -86,16 +90,16 @@ class FollowerFragment : Fragment() {
         })
     }
     private fun showRecyclerList() {
-        binding.rvGithubFollower.layoutManager = LinearLayoutManager(activity)
-        binding.rvGithubFollower.adapter = adapter
+        binding.rvGithubFollowing.layoutManager = LinearLayoutManager(activity)
+        binding.rvGithubFollowing.adapter = adapter
 
 
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        binding = FragmentFollowerBinding.inflate(inflater,container,false)
-        binding.rvGithubFollower.layoutManager = LinearLayoutManager(activity)
-        binding.rvGithubFollower.adapter = FollowerAdapter(listGithubFollower)
+        binding = FragmentFollowingBinding.inflate(inflater,container,false)
+        binding.rvGithubFollowing.layoutManager = LinearLayoutManager(activity)
+        binding.rvGithubFollowing.adapter = FollowingAdapter(listGithubFollowing)
         return binding.root
     }
 

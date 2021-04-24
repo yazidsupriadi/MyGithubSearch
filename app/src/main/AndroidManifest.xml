@@ -15,14 +15,14 @@
         android:usesCleartextTraffic="true">
 
         <receiver
-            android:name=".AlarmReceiver"
+            android:name=".ui.setting.AlarmReceiver"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".FavoriteActivity" />
-        <activity android:name=".AlarmActivity" />
-        <activity android:name=".DetailActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity android:name=".ui.favorite.FavoriteActivity" />
+        <activity android:name=".ui.setting.SettingActivity" />
+        <activity android:name=".ui.detail.DetailActivity" />
+        <activity android:name=".ui.spashscreen.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

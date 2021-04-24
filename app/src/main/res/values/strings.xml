@@ -29,4 +29,6 @@
     <string name="set_alarm">set Alarm</string>
     <string name="repeat_alarm">repeating alarm</string>
     <string name="cancel_alarm">cancel alarm</string>
+    <string name="add_favorite">add favorite</string>
+    <string name="daily_remainder_alarm">Daily Remainder Alarm</string>
 </resources>

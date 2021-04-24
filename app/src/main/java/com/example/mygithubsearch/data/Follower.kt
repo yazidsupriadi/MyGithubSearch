@@ -1,10 +1,10 @@
-package com.example.mygithubsearch
+package com.example.mygithubsearch.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Following(
+data class Follower(
     var username: String? = null,
     var name: String? = null,
     var avatar: String? = null,

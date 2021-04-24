@@ -1,4 +1,4 @@
-package com.example.mygithubsearch
+package com.example.mygithubsearch.data
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
