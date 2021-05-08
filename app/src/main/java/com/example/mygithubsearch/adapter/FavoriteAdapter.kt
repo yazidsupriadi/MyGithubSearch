@@ -44,16 +44,7 @@ class FavoriteAdapter(private val activity: Activity) : RecyclerView.Adapter<Fav
                     .into(binding.imgItemPhoto)
             binding.tvItemName.text = favorite.username
             binding.tvItemLocation.text = favorite.location
-            itemView.setOnClickListener(
-                    CustomOnItemClickListener(adapterPosition,object : CustomOnItemClickListener.OnItemClickCallback{
-                        override fun onItemClicked(view: View, position: Int) {
-                            val intent = Intent(activity,DetailActivity::class.java)
-                            intent.putExtra(DetailActivity.EXTRA_DATA,position)
-                            intent.putExtra(DetailActivity.EXTRA_FAVORITE,favorite)
-                            activity.startActivity(intent)
-                        }
-                    })
-            )
+
 
         }
     }

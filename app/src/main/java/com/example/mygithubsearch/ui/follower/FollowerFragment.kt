@@ -44,7 +44,7 @@ class FollowerFragment : Fragment() {
     private fun getGithubFollower(id: String) {
         val client = AsyncHttpClient()
         client.addHeader("User-Agent", "request")
-        client.addHeader("Authorization", "token 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")
+        client.addHeader("Authorization", "token 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")
         val url = "https://api.github.com/users/$id/followers"
         client.get(url, object : AsyncHttpResponseHandler() {
             override fun onSuccess(

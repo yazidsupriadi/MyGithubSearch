@@ -71,19 +71,20 @@ class FavoriteActivity : AppCompatActivity() {
             binding.progressBarFavorite.visibility = View.VISIBLE
             val favoriteHelper = FavoriteHelper.getInstance(applicationContext)
             favoriteHelper.open()
-            val deferredNotes = async(Dispatchers.IO) {
+            val deferredFavorites = async(Dispatchers.IO) {
                 val cursor = favoriteHelper.queryAll()
                 MappingHelper.mapCursorToArrayList(cursor)
             }
-            favoriteHelper.close()
             binding.progressBarFavorite.visibility = View.INVISIBLE
-            val notes = deferredNotes.await()
-            if (notes.size > 0) {
-                adapter.listFavorites = notes
+            val favorites = deferredFavorites.await()
+            if (favorites.size > 0) {
+                adapter.listFavorites = favorites
             } else {
                 adapter.listFavorites = ArrayList()
                 showSnackbarMessage()
             }
+
+            favoriteHelper.close()
         }
     }
     override fun onSaveInstanceState(outState: Bundle) {
@@ -95,7 +96,6 @@ class FavoriteActivity : AppCompatActivity() {
         Toast.makeText(this, getString(R.string.add_favorite), Toast.LENGTH_SHORT).show()
     }
 
-    // run this func when open again for refresh data
     override fun onResume() {
         super.onResume()
         loadNotesAsync()

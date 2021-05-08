@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
     private fun getAllGitUser() {
         binding.progressBar.visibility = View.VISIBLE
         val client = AsyncHttpClient()
-        val apiKey = "token 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"
+        val apiKey = "token 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"
         client.addHeader("Authorization", apiKey)
         client.addHeader("User-Agent", "request")
         val url = "https://api.github.com/users"
@@ -160,7 +160,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.VISIBLE
         val client = AsyncHttpClient()
 
-        val apiKey = "token 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"
+        val apiKey = "token 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"
         client.addHeader("Authorization", apiKey)
         client.addHeader("User-Agent", "request")
         val url = "https://api.github.com/users/$id"
@@ -226,7 +226,7 @@ class MainActivity : AppCompatActivity() {
     private fun getGitDataSearch(id: String) {
         binding.progressBar.visibility = View.VISIBLE
         val client = AsyncHttpClient()
-        val apiKey = "token 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"
+        val apiKey = "token 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"
         client.addHeader("Authorization", apiKey)
         client.addHeader("User-Agent", "request")
         val url = "https://api.github.com/search/users?q=$id"

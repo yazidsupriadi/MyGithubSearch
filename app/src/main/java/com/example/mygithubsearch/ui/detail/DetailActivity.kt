@@ -1,5 +1,6 @@
 package com.example.mygithubsearch.ui.detail
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.os.Build
@@ -23,8 +24,7 @@ import com.example.mygithubsearch.R
 import com.example.mygithubsearch.data.Favorite
 import com.example.mygithubsearch.database.FavoriteHelper
 import com.example.mygithubsearch.database.DatabaseContract
-import com.example.mygithubsearch.database.DatabaseContract.FavoriteColumns.Companion.CONTENT_URI
-import com.example.mygithubsearch.helper.MappingHelper
+import de.hdodenhof.circleimageview.CircleImageView
 
 
 class DetailActivity : AppCompatActivity() {
@@ -41,6 +41,7 @@ class DetailActivity : AppCompatActivity() {
 
 
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,11 +50,9 @@ class DetailActivity : AppCompatActivity() {
 
         favoriteHelper = FavoriteHelper.getInstance(applicationContext)
         favoriteHelper.open()
-
         favorite = intent.getParcelableExtra(EXTRA_FAVORITE)
 
         if (favorite != null) {
-
             val tvName: TextView = findViewById(R.id.name)
             val tvUsername: TextView = findViewById(R.id.username)
             val tvCompany: TextView = findViewById(R.id.company)
@@ -66,7 +65,7 @@ class DetailActivity : AppCompatActivity() {
 
             supportActionBar!!.title = detailFavoriteUser.name.toString()
             tvName.text = detailFavoriteUser.name.toString()
-            tvUsername.text =  detailFavoriteUser.username.toString()
+            tvUsername.text =  "@${detailFavoriteUser.username.toString()}"
             Glide.with(this)
                     .load(detailFavoriteUser.avatar.toString())
                     .fitCenter()
@@ -77,35 +76,56 @@ class DetailActivity : AppCompatActivity() {
             tvFollowing.text = detailFavoriteUser.following.toString()
             tvRepository.text = detailFavoriteUser.repository.toString()
         } else {
-            setUserDetailData()
+
+            val tvName: TextView = findViewById(R.id.name)
+            val tvUsername: TextView = findViewById(R.id.username)
+            val tvCompany: TextView = findViewById(R.id.company)
+            val tvLocation: TextView = findViewById(R.id.location)
+            val ivAvatar: ImageView = findViewById(R.id.img_detail_profile)
+            val tvFollowing: TextView = findViewById(R.id.following_count)
+            val tvFollowers: TextView = findViewById(R.id.followers_count)
+            val tvRepository: TextView = findViewById(R.id.repository_count)
+            val detailUser = intent.getParcelableExtra<Github>(EXTRA_DATA) as Github
+
+            supportActionBar!!.title = detailUser.name.toString()
+            tvName.text = detailUser.name.toString()
+            tvUsername.text =  detailUser.username.toString()
+            Glide.with(this)
+                    .load(detailUser.avatar.toString())
+                    .fitCenter()
+                    .into(ivAvatar)
+            tvCompany.text = detailUser.company.toString()
+            tvLocation.text = detailUser.location.toString()
+            tvFollowers.text = detailUser.followers.toString()
+            tvFollowing.text = detailUser.following.toString()
+            tvRepository.text = detailUser.repository.toString()
         }
 
 
         val fab: ImageView = findViewById(R.id.fab)
 
         val isFavorite: Int = R.drawable.ic_baseline_favorite_24
-        val isUnFavorite: Int = R.drawable.ic_baseline_favorite_border_24
+        val isUnFavorite : Int = R.drawable.ic_baseline_favorite_border_24
         var favoriteStatus = false
 
 
         fab.setOnClickListener { view ->
-            favoriteStatus = !favoriteStatus
-            if (favoriteStatus){
+            if (!favoriteStatus){
 
                 val tvName: TextView = findViewById(R.id.name)
                 val tvUsername: TextView = findViewById(R.id.username)
                 val tvCompany: TextView = findViewById(R.id.company)
                 val tvLocation: TextView = findViewById(R.id.location)
-                val ivAvatar: ImageView = findViewById(R.id.img_detail_profile)
                 val tvFollowing: TextView = findViewById(R.id.following_count)
                 val tvFollowers: TextView = findViewById(R.id.followers_count)
                 val tvRepository: TextView = findViewById(R.id.repository_count)
 
+                val detailUser = intent.getParcelableExtra<Github>(EXTRA_DATA) as Github
                 val favoriteUsername = tvUsername.text.toString()
                 val favoriteName = tvName.text.toString()
                 val favoriteCompany = tvCompany.text.toString()
                 val favoriteLocation = tvLocation.text.toString()
-                val favoriteAvatar = ivAvatar.toString()
+                val favoriteAvatar = detailUser.avatar.toString()
                 val favoriteFollowing = tvFollowing.text.toString()
                 val favoriteFollowers = tvFollowers.text.toString()
                 val favoriteRepository = tvRepository.text.toString()
@@ -122,19 +142,29 @@ class DetailActivity : AppCompatActivity() {
                 values.put(DatabaseContract.FavoriteColumns.FOLLOWERS,favoriteFollowers)
                 values.put(DatabaseContract.FavoriteColumns.REPOSITORY,favoriteRepository)
                 values.put(DatabaseContract.FavoriteColumns.FAVORITE,favoriteData)
-
                 favoriteHelper.insert(values)
 
-
                 favoriteStatus = true
-                fab.setImageResource(isFavorite)
+
                 Snackbar.make(view, "Favorite User added", Snackbar.LENGTH_LONG)
                         .setAction("Action", null)
                         .show()
-            }else{
-                favoriteHelper.deleteById(favorite?.username.toString())
+                fab.setImageResource(isFavorite)
+
+            }
+            else{
+
+                val tvUsername: TextView = findViewById(R.id.username)
+                val favoriteUsername = tvUsername.text.toString()
+                favoriteHelper.deleteById(favoriteUsername)
                 favoriteStatus = false
+
+                Snackbar.make(view, "Favorite User deleted", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null)
+                        .show()
                 fab.setImageResource(isUnFavorite)
+
+
             }
         }
 
@@ -169,6 +199,7 @@ class DetailActivity : AppCompatActivity() {
         tvFollowers.text = detailUser.followers.toString()
         tvFollowing.text = detailUser.following.toString()
         tvRepository.text = detailUser.repository.toString()
+
     }
     private fun viewPager() {
         val sectionsPagerAdapter = SectionPagerAdapter(this)
@@ -190,18 +221,18 @@ class DetailActivity : AppCompatActivity() {
         return true
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.favorite -> {
                 val i = Intent(this, FavoriteActivity::class.java)
                 startActivity(i)
-                return true
+                true
             }
             R.id.setting -> {
                 val i = Intent(this, SettingActivity::class.java)
                 startActivity(i)
-                return true
+                true
             }
-            else -> return true
+            else -> true
         }
     }
 

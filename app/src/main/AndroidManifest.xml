@@ -22,7 +22,8 @@
         <activity android:name=".ui.favorite.FavoriteActivity" />
         <activity android:name=".ui.setting.SettingActivity" />
         <activity android:name=".ui.detail.DetailActivity" />
-        <activity android:name=".ui.spashscreen.SplashScreenActivity">
+        <activity android:name=".ui.spashscreen.SplashScreenActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
